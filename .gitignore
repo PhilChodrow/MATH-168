@@ -1,0 +1,11 @@
+*.DS_Store
+*.aux
+*checkpoint*
+notebooks
+*.ipynb
+survey-analysis.R
+project-idea-similarities.png
+project-interests-network.R
+
+MATH 168 Entrance Survey Survey Student Analysis Report-2.csv
+MATH 168 Project Pitches - Sheet1.csv

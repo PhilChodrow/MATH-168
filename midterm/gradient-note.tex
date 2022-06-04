@@ -1,0 +1,44 @@
+\documentclass{hw}
+
+\title{Note on Gradients}
+\author{MATH 168, Spring 2022}
+\date{}
+
+\begin{document}
+
+
+\section*{A Note on Gradients}
+
+In case you haven't seen it before, if $f:\mathbb{R}^n \rightarrow \mathbb{R}$ is a function that takes in $n$ real numbers and outputs a single real number, its \emph{gradient}, written $\nabla f$, is a function $f:\mathbb{R}^n \rightarrow \mathbb{R}^n$. 
+Evaluating $\nabla f$ at a point $\mathbf{x}$ gives the \emph{gradient vector} of $f$ at $\mathbf{x}$. 
+The gradient vector is calculated as: 
+\begin{align*}
+    \nabla f(\mathbf{x}) = \left(\begin{matrix}
+        \frac{\partial f(\mathbf{x})}{\partial x_1} \\ 
+        \frac{\partial f(\mathbf{x})}{\partial x_2} \\ 
+        \vdots  \\ 
+        \frac{\partial f(\mathbf{x})}{\partial x_n}
+    \end{matrix}\right)\;. 
+\end{align*}
+Each of the components here is a \emph{partial derivative}. 
+To compute $\frac{\partial f(\mathbf{x})}{\partial x_1}$, take the derivative of $f$ with respect to $x_1$, while treating all other variables as constants. 
+
+For example, let $f(\mathbf{x}) = x_1^2 + \sin(x_2) + x_2x_3$. 
+Then, the gradient of $f$ evaluated at $\mathbf{x}$ is 
+\begin{align*}
+    \nabla f(\mathbf{x}) = \left(\begin{matrix}
+        \frac{\partial f(\mathbf{x})}{\partial x_1} \\ 
+        \frac{\partial f(\mathbf{x})}{\partial x_2} \\ 
+        \frac{\partial f(\mathbf{x})}{\partial x_3}
+    \end{matrix}\right)\; = \left(\begin{matrix}
+        2x_1 \\ 
+        \cos(x_2) + x_3 \\ 
+        x_2\ 
+    \end{matrix}\right)\;.
+\end{align*}
+To compute the first entry of this vector, I treated $x_2$ and $x_3$ as constants, and took the derivative of $f$ with respect to $x_1$. 
+I repeated this process for each of the other two entries. 
+
+
+
+\end{document}

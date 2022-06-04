@@ -1,140 +1,160 @@
 \documentclass{hw}
 
-\title{MATH 168, Assignment 1}
-\author{Phil Chodrow}
+\title{Assignment 1}
+\author{MATH 168, Spring 2022}
+\date{Due Monday, April 11th}
 
 \begin{document}
 
+
 \problem{}
 
-You're likely familiar with the algebraic definition of the eigenvalues and eigenvectors of a matrix $\mathbf{A}$ as solutions to the equation $\mathbf{A}\mathbf{v} = \lambda \mathbf{v}$. 
-In this problem, we will prove an additional viewpoint on eigenvalues and eigenvectors that is especially important in network science and many other fields of applied mathematics: 
-\begin{quote}
-    \emph{For symmetric matrices, eigenvalues/eigenvectors are solutions of optimization problems.} 
-\end{quote}
-Let $\lVert\mathbf{v} \rVert$ be the Euclidean norm of a vector $\mathbf{v}$. 
-Here's our theorem: 
-\begin{thm}\label{thm:variational}
-    Let $\mathbf{A} \in \mathbb{R}^{n\times n}$ be a symmetric matrix. 
-    Let $\lambda_1,\ldots,\lambda_n$ be the eigenvalues of $\mathbf{A}$ ordered from smallest ($\lambda_1$) to largest ($\lambda_n$).  
-    Then, 
-    \begin{align*}
-        \lambda_n = \max_{\mathbf{v} \in \mathbb{R}^n} \left\{\mathbf{v}^T\mathbf{A}\mathbf{v} \;\big|\; \lVert{\mathbf{v}}\rVert = 1\right\} \;.
-    \end{align*}
-\end{thm}
-In words, the largest value of the function $f(\mathbf{v}) = \mathbf{v}^T\mathbf{A}\mathbf{v}$ that can be obtained by picking a vector $\mathbf{v} \in \mathbb{R}^n$ satisfying $\lVert \mathbf{v} \rVert = 1$ is $\lambda_n$. 
-The reason that \Cref{thm:variational} matters from an applied standpoint is that many network science and data analysis tasks correspond to maximizing functions that look like $f(\mathbf{v}) = \mathbf{v}^T\mathbf{A}\mathbf{v}$.  
+Complete Exercise 6.1 in Newman. 
 
+\problem{}
 
-\part
+Complete Exercise 6.4 in Newman. 
 
-    Prove \Cref{thm:variational} in three steps. 
-    \begin{enumerate}
-        \item Expand $\mathbf{A}$ in an orthonormal basis of eigenvectors: 
-        \begin{align*}
-            \mathbf{A} = \sum_{i = 1}^n \lambda_i\mathbf{u}_i\mathbf{u}_i^T\;,
-        \end{align*}
-        where each $\mathbf{u}_i$ is an eigenvector $\mathbf{A}$ with eigenvalue $\lambda_i$. 
-        As a reminder, orthonormality means that $\lVert \mathbf{u}_i \rVert = 1$ and $\mathbf{u}_i^T \mathbf{u}_j = 1$ if $i = j$ and $0$ otherwise.   
-        Explain carefully why you are allowed to perform this expansion (cite a theorem). 
-        \item Write $\mathbf{v} = \sum_{i = 1}^n \alpha_i \mathbf{u}_i$ for some undetermined coefficients $\{\alpha_i\}$, and explain why you are allowed to do this. 
-        Compute $\lVert \mathbf{v}\rVert$ in terms of the coefficients $\{\alpha_i\}$, and determine what the constraint $\lVert \mathbf{v} \rVert = 1$ implies about $\{\alpha_i\}$. 
-        \item Finally, use the first two steps to compute $\mathbf{v}^T\mathbf{A}\mathbf{v}$ directly in terms of $\{\lambda_i\}$ and $\{\alpha_i\}$. 
-        Show that the result is maximized when $\alpha_n = 1$ and $\alpha_i = 0$ for $i < n$. 
-        Include a closing sentence to help your reader connect this final result to \Cref{thm:variational}. 
-    \end{enumerate}
-    
-    \solution
+\problem{}
+
+The \emph{node-edge incidence matrix} of a graph with $n$ nodes and $m$ edges is a matrix $\mathbf{B} \in \mathbb{R}^{2m\times n}$. 
+There are two rows of $\mathbf{B}$ for each edge $e$. 
+If $e$ links nodes $j$ and $\ell$, then there is a row for the $j\rightarrow \ell$ ``direction'' and a row for the $\ell \rightarrow j$ ``direction''. 
+So, we can write an individual entry of $\mathbf{B}$ as $b_{(j\rightarrow \ell), i}$. 
+These entries are given by: 
+\begin{align*}
+    b_{(j \rightarrow \ell), i} = \begin{cases}
+        -1 &\quad i = j \\ 
+        +1 &\quad i = \ell \\ 
+        0 &\quad \text{otherwise.}
+    \end{cases}
+\end{align*}
 
 \part 
 
-    Prove \Cref{thm:variational} (again) using the \emph{principle of Lagrange multipliers}. 
-    The principle of Lagrange multipliers states that, if $\mathbf{x}$ solves the problem 
-    \begin{align*}
-        \max \left\{f(\mathbf{x}) \;\big|\; g(\mathbf{x}) = 0\right\} \;,
-    \end{align*}
-    then $\mathbf{x}$ must also satisfy the equation 
-    \begin{align*}
-        \nabla f(\mathbf{x}) + c \nabla g(\mathbf{x}) = 0
-    \end{align*}
-    for some scalar $c \in \mathbb{R}$, provided that $f$ and $g$ satisfy certain technical conditions (which you may assume are satisfied here). 
-    
-    You may assume without proof that any continuous function on the unit sphere $S^{n-1} = \{\mathbf{v} : \lVert \mathbf{v}\rVert = 1\}$ possesses at least one maximum value (this follows from the compactness of $S^{n-1}$). 
-    You may also assume without proof that the function $f(\mathbf{v}) = \mathbf{v}^T\mathbf{A}\mathbf{v}$ is continuous. 
-    State clearly where you use these facts in your proof. 
-    Please again make sure to explicitly state where you use the hypothesis that $\mathbf{A}$ is symmetric. 
+The Laplacian matrix $\mathbf{L}$ of a graph is defined in eq. (6.29) of Newman. 
+Prove using direct matrix multiplication that $\mathbf{L}$ can be computed using one of the two formulae below (and figure out which one): 
+\begin{align*}
+    \mathbf{L} = \frac{1}{2}\mathbf{B}^T\mathbf{B} \quad \text{or} \quad \mathbf{L} = \frac{1}{2}\mathbf{B}\mathbf{B}^T\;. 
+\end{align*}
 
-    \solution
+\part 
 
-    \part 
-    
-    Using \Cref{thm:variational}, give an \emph{extremely short} proof that
-    \begin{align*}
-        \lambda_1 = \min_{\mathbf{v} \in \mathbb{R}^n} \left\{\mathbf{v}^T\mathbf{A}\mathbf{v} \;\big|\; \lVert{\mathbf{v}}\rVert = 1\right\} \;.
-    \end{align*} 
-
-    \solution 
+Use your result from Part (a) to give a very short proof that $\mathbf{L}$ is a positive-semidefinite matrix. 
 
 \problem{}
 
-    Perron-Frobenius problem here. 
+In section 6.14.1, Newman considers the role of the Laplacian $\mathbf{L}$ in partitioning or ``cutting'' graphs into groups.
+Let's focus on the two-group case.
+In eq. (6.37), Newman defines an objective function 
+\begin{align}
+    R(\mathbf{s}) = \frac{1}{4}\mathbf{s}^T\mathbf{L}\mathbf{s}\;,
+\end{align}
+where $\mathbf{s}\in \mathbb{R}^n$ is the vector with entries 
+\begin{align}
+    s_i = \begin{cases}
+        +1 &\quad \text{node } i \text{ is in group 1,} \\ 
+        -1 &\quad \text{node } i \text{ is in group 2.}
+    \end{cases}
+\end{align}
+The idea is that a choice of $\mathbf{s}$ corresponds to a choice of groups for the nodes. 
+Newman writes---somewhat uncarefully---that ``... our goal is to find the vector $\mathbf{s}$ that minimizes the cut size (6.37) for given $\mathbf{L}$.''
+
+Assume throughout this problem that we are considering the Laplacian matrix $\mathbf{L}$ of a connected graph. 
+
+\part 
+
+Find the vector $\mathbf{s}$ that minimizes $R(\mathbf{s})$. 
 
 
-    \solution
+\begin{hint}
+There are multiple ways to do this, but carefully reading Chapter 6, section 14 of Newman is one. 
+\end{hint}
 
-\problem{}
+\part 
 
-    
+Comment briefly (2-3 sentences is fine) on whether this vector is useful in the context of the graph partitioning problem. 
 
-    Let $X_1,X_2\ldots,$ be an infinite sequence of i.i.d. random variables. 
-    Let $N$ be a strictly positive random variable that is independent of the sequence $\{X_1,X_2,\ldots\}$. 
-    Let 
-    \begin{align*}
-        Y = \sum_{i = 1}^N X_i\;. 
-    \end{align*}
-    Prove that $\mathbb{E}[Y] = \mathbb{E}[X_1]\mathbb{E}[N]$. 
+\part 
 
-    \solution
+Suggest a \textbf{heuristic} idea for how you might modify Newman's framework in order to generate more useful solutions. 
+What kinds of condition could you impose on $\mathbf{s}$ in order to make it more useful for the partitioning problem?
 
-\problem{}
-
-    In this problem, you will argue that a binomial distribution can be approximated by a Poisson distribution in a certain limit. 
-    This approximation will be useful when we study properties of random graph models. 
-    
-    As a reminder, a nonnegative discrete random variable $X$ has a \emph{binomial distribution} with number of trials $n$ and success rate $p$ if its probability mass function is 
-    \begin{align*}
-        p_X(k) = \binom{n}{k}p^{k}(1-p)^{n-k}\;. 
-    \end{align*}
-    A nonnegative discrete random variable $Y$ has a \emph{Poisson distribution} with parameter $\mu$ if its probability mass function is 
-    \begin{align*}
-        p_Y(k) = \frac{\mu^ke^{-\mu}}{k!}\;. 
-    \end{align*}
-    Suppose now that $X$ is binomial and that $p = c / n$. 
-    Show that, as $n$ grows large, $X$ is approximately Poisson. 
-    Identify the parameter of the Poisson distribution in terms of $c$ and $n$. 
-    It suffices to show that the PMF of $X$ converges to a Poisson PMF (formally, we are showing \emph{convergence in distribution}). 
-
-    The following approximations are valid for large $n$, when $k$ and $m$ are fixed constants.  
-    You may use them without proof. 
-    \begin{align*}
-        \binom{n}{k} \simeq \frac{n^k}{k!} \quad \text{and} \quad 
-        e^{m}      \simeq \left(1 + \frac{m}{n}\right)^{n}\;.        
-    \end{align*} 
-
-    \solution
+Please \textbf{draw} a simple network to accompany your discussion, and show how your proposed modification might partition the network. 
+\textbf{You are not responsible for proving or exactly calculating anything for this part}.
 
 \problem{}
 
-Please briefly respond to the following questions: 
-\begin{enumerate}
-    \item Why are you interested in learning about networks? 
-    \item What is one question you have about the role that networks play in your life today?
-    \item What is something related to networks that you might like to achieve by the end of the quarter? 
-    \item MATH 168 has upper-div prerequisites in linear algebra and probability. 
-    Pick one of these two prerequisites. 
-    Share something that you thought was especially cool or interesting, and something that you found especially disappointing or frustrating. 
-\end{enumerate}
-A few sentences for each item is plenty. 
+In an upcoming part of the course, we will spend a lot of time working with \emph{random graphs}. 
+In this problem, you will begin an analysis of the famous Erd\H{o}s-R\'enyi random graph model, which was first studied by Solomonoff and Rapoport. 
 
+A random graph model is a \emph{probability distribution over graphs}. 
+Many random graph models are specified as recipes for randomly generating a graph. 
+Here's the recipe for the Erd\H{o}s-R\'enyi model $G(n,p)$: 
+\begin{itemize}
+    \item Start with $n$ nodes and no edges. 
+    \item Between each pair of distinct nodes, place an edge with probability $p$. Each edge placement event is independent from each other edge placement event. 
+\end{itemize}
+
+Since $G(n,p)$ is a random graph, many of its properties can be described as random variables. 
+Here are a few random variables:
+\begin{itemize}
+    \item $M$, the total number of edges in the graph. 
+    \item $K_i$, the degree of node $i$. 
+    \item The number of components in the graph. 
+\end{itemize}
+In this problem, you'll show a few things about some of these random variables. 
+
+\part 
+
+Consider the degree $K_i$ of node $i$. 
+Argue that, if $p = c/n$ for some constant $c > 0$, then the degree of node $i$ is approximately distributed according to a Poisson distribution \textbf{when $n$ is very large} (i.e. $n\rightarrow \infty$). 
+Carefully justify each step.  
+
+\begin{hint}
+    Homework 0. 
+\end{hint}
+
+\part 
+
+Using your result from Part (a), compute the approximate mean and variance of $K_i$ in terms of $c$, again in the limit $n\rightarrow \infty$. 
+
+We often report an estimate of a mean in the form $\mu \pm \sigma$, where $\sigma$ is the standard deviation. 
+Calculate the standard deviation $\sigma$. 
+In a large Erd\H{o}s-R\'enyi random graph in which each node has expected degree $100$, what is the estimate $100 \pm \sigma$? 
+
+\begin{note}
+    This is usually considered to be a small amount of variation in the node degrees when compared against real-world network data.  
+\end{note}
+
+\part 
+
+Using your result from Part (a), compute the approximate probability mass function of $M$, the total number of edges in the graph. 
+Find the approximate mean and variance of $M$. 
+Here, you should assume that $n$ is large but finite. 
+
+\problem{}
+
+The \emph{degree distribution} of a random graph is an empirical probability distribution $p$ such that $p_k$ is the proportion of nodes with degree $k$. 
+It is possible to prove that the degree distribution of an Erd\H{o}s-R\'enyi random graph is approximately the same as the Poisson distribution for an individual node degree. 
+
+Write a computer program to produce two annotated plots. 
+
+\begin{itemize}
+    \item Generate an Erd\H{o}s-R\'enyi random graph with $10^6$ nodes and expected degree $100$. 
+    Compute its degree distribution. 
+    Plot this distribution. 
+    Also plot (in a different color or symbol) a Poisson distribution with mean $100$. 
+    Comment briefly on your findings. 
+    \item Acquire, in any way you choose, a network data set containing at least $10^3$ nodes. 
+    Some data sets are available at the sources listed \href{https://www.philchodrow.com/intro-networks/appendices/additional_resources.html#data-sets}{here}, but you're free to look anywhere else as well. 
+    Compute and plot the degree distribution of your network. 
+    Again plot a Poisson distribution with mean equal to the mean degree of the network. 
+    Comment briefly on your findings. 
+\end{itemize}
+
+\begin{note}
+    You may find it helpful to plot the degree distributions on log-log axes. 
+\end{note}
 
 \end{document}

@@ -1,0 +1,153 @@
+\documentclass{hw}
+
+\usepackage{listings}
+
+\title{Assignment 5}
+\author{MATH 168, Spring 2022}
+\date{Due Monday, May 9th}
+
+\begin{document}
+
+\section*{Readings}
+
+\begin{itemize}
+    \item \href{http://www.philchodrow.com/intro-networks/chapters/ranking_centrality.html}{Lecture notes} on network exploration.
+    \item Newman 6.14.3 on random walks. 
+    \item Newman 18.3.1 (network navigation).
+    \item \href{http://www.philchodrow.com/intro-networks/chapters/agent_based_modeling.html}{Lecture notes} on agent-based modeling.
+\end{itemize}
+
+
+\problem{(2 points) Modularity is a Covariance}
+
+Consider a connected and aperiodic graph $G$ with adjacency matrix $\mathbf{A}$. 
+Suppose that $G$ has two labeled clusters, which we'll label $C_1$ and $C_2$. 
+The node membership vector $\mathbf{z}$ is defined so that $z_i = 1$ means that node $i$ is in cluster $1$. 
+Let $\{X_t\}$ be a simple random walk on this graph. 
+Define the sequence of random variables 
+\begin{align}
+    S_t \triangleq \begin{cases}
+        +1 &\quad X_t \in C_1 \\ 
+        -1 &\quad X_t \in C_2\;.
+    \end{cases}
+\end{align}
+That is, the sign of $S_t$ tells us whether $X_t$ is currently on a node in cluster $1$ or a node in cluster $2$. 
+We assume that the initial distribution of $X_0$ is $\pi$, the stationary distribution. 
+This implies that $\mathbb{P}(X_t = i) = \pi_i$ for all $t$. 
+
+You might imagine that, in a graph with two well-separated clusters, it's relatively unlikely for the random walk to move between them. 
+That is, ``most of the time,'' we should have $S_t = S_{t+1}$. 
+One way to quantify this intuition is via the so-called \emph{one-step auto-covariance} 
+\begin{align}
+    \mathrm{Cov}(S_t, S_{t+1}) \triangleq \mathbb{E}[S_tS_{t+1}] - \mathbb{E}[S_t]\mathbb{E}[S_{t+1}]\;. 
+\end{align}
+In this problem, you will show that this autocovariance is closely related to the modularity of the graph. 
+
+\part 
+
+Compute $\mathbb{E}[S_t]$ and $\mathbb{E}[S_{t+1}]$ in terms of quantities like $a_{ij}$, $k_i$, and $\delta(z_i, z_j)$. 
+The simplest way to approach this is by using the law of total expectation, conditioning on the event $X_t = i$ for each node $i$. 
+
+\part 
+
+Compute $\mathbb{E}[S_tS_{t+1}]$. 
+This is the trickiest part of the calculation! 
+Here's my suggested first step, again using the law of total expectation: 
+\begin{align}
+    \mathbb{E}[S_tS_{t+1}] = \sum_{i, j \in N} \mathbb{E}[S_tS_{t+1}|X_t = i, X_{t+1} = j] \mathbb{P}(X_{t+1} = j, X_{t} = i)\;.
+\end{align}
+
+\part 
+
+Argue that 
+\begin{align}
+    \mathrm{Cov}(S_t, S_{t+1}) = k_1Q + k_2\;,
+\end{align}
+for some constants $k_1$ and $k_2$, and determine the value of each constant.  
+That is, another way to view the modularity is as a direct measure of the correlation between the cluster labels of a simple random walk. 
+
+\problem{(2 points)}
+
+Please use your software of choice to solve the following problems, making sure to show both commented code and clearly-labeled outputs. 
+The only thing you are \textbf{not} allowed to do is use the Mesa framework for agent-based modeling in Python. 
+
+\part 
+
+Write a function \texttt{random\_walk(G, n\_steps, i)} which simulates \texttt{n\_steps} timesteps of a simple random walk on a graph \texttt{G}, starting at node \texttt{i}. 
+This function should return a list or array containing the labels of the nodes visited by the walk. 
+For example: 
+
+\begin{verbatim}
+    W = random_walk(G, n_steps, i)
+    W[t] # location of walk at time t
+\end{verbatim}
+
+\part 
+
+Access any small-ish connected graph (no more than 1,000 nodes), and use your function to simulate a random walk on this graph for at least $10^5$ timesteps. 
+
+\part 
+
+Create a scatterplot: 
+\begin{itemize}
+    \item Each point corresponds to a node $i$. 
+    \item The horizontal coordinate is $\pi_i$. 
+    \item The vertical coordinate is the fraction of time that the random walk spent on node $i$. 
+\end{itemize}
+Also plot the line of equality $y = x$. 
+Of course, we are expecting to find that the points on the scatterplot are close to the line of equality.  
+Please make sure that your plot is carefully labeled. 
+
+
+\problem{(2 point)} 
+
+Please use your software of choice to solve the following problems, making sure to show both commented code and clearly-labeled outputs. 
+The only thing you are \textbf{not} allowed to do is use the Mesa framework for agent-based modeling in Python. 
+
+\begin{note}
+    This problem is intentionally similar to the last problem. 
+\end{note}
+
+\part 
+
+Write a function \texttt{pagerank\_walk(G, n\_steps, i, alpha)} which simulates \texttt{n\_steps} timesteps of a PageRank (teleporting) random walk on a graph \texttt{G}, starting at node \texttt{i}. 
+Note that the user is allowed to specify the teleportation parameter \texttt{alpha}. 
+This function should return a list or array containing the labels of the nodes visited by the walk. 
+For example: 
+
+\begin{verbatim}
+    W = pagerank_walk(G, n_steps, i)
+    W[t] # location of walk at time t
+\end{verbatim}
+
+\part 
+
+Access any small-ish connected graph (no more than 1,000 nodes), and use your function to simulate a PageRank random walk on this graph for at least $10^5$ timesteps. 
+
+\part 
+
+\begin{note}
+    This part is the biggest difference relative to Problem 2. 
+\end{note}
+
+Write a function \texttt{pagerank\_matrix(G,alpha)} which computes the transition matrix for the PageRank random walk, again with user-specified teleportation parameter. 
+Compute the stationary distribution $\pi_i$ by finding the leading eigenvector of this matrix. 
+
+An optimal solution will not use for-loops! 
+
+\part 
+
+Create a scatterplot: 
+\begin{itemize}
+    \item Each point corresponds to a node $i$. 
+    \item The horizontal coordinate is $\pi_i$. 
+    \item The vertical coordinate is the fraction of time that the random walk spent on node $i$. 
+\end{itemize}
+Also plot the line of equality $y = x$. 
+Of course, we are expecting to find that the points on the scatterplot are close to the line of equality.  
+Please make sure that your plot is carefully labeled. 
+
+
+
+
+\end{document}
